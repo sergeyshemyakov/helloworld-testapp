@@ -6,9 +6,9 @@ import {
 
     BeforeBlockApplyContext, TransactionApplyContext
 } from 'lisk-sdk';
-import { HelloAsset } from "./assets/hello_asset";
+// import { HelloAsset } from "./assets/hello_asset";
 
-// const { HelloAsset } = require('./assets/hello_asset');
+const { HelloAsset } = require('./assets/hello_asset');
 
 export class HelloModule extends BaseModule {
     
