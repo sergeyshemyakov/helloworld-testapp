@@ -27,3 +27,8 @@ const helloAssetSchema = {
   },
 };
 
+module.exports = {
+  CHAIN_STATE_HELLO_COUNTER,
+  helloCounterSchema,
+  helloAssetSchema
+};

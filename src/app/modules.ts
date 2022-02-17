@@ -5,7 +5,7 @@ import { HelloModule } from "./modules/hello/hello_module";
 // @ts-expect-error Unused variable error happens here until at least one module is registered
 export const registerModules = (_app: Application): void => {
 
-    console.log("Before registering Hello Module");
+//    console.log("Before registering Hello Module");
     _app.registerModule(HelloModule);
-    console.log("After registering");
+//    console.log("After registering");
 };

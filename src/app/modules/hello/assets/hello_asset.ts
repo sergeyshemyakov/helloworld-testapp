@@ -1,4 +1,9 @@
-import { BaseAsset, ApplyAssetContext, ValidateAssetContext } from 'lisk-sdk';
+import { BaseAsset, ApplyAssetContext, ValidateAssetContext, codec } from 'lisk-sdk';
+
+const {
+    helloCounterSchema,
+    CHAIN_STATE_HELLO_COUNTER
+} = require('../schemas');
 
 export class HelloAsset extends BaseAsset {
 	public name = 'hello';

@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 
 import {
-    AfterBlockApplyContext, BaseModule,
+    AfterBlockApplyContext, BaseModule, codec,
 
 
     BeforeBlockApplyContext, TransactionApplyContext
@@ -9,6 +9,12 @@ import {
 // import { HelloAsset } from "./assets/hello_asset";
 
 const { HelloAsset } = require('./assets/hello_asset');
+
+const {
+    helloCounterSchema,
+    helloAssetSchema,
+    CHAIN_STATE_HELLO_COUNTER
+} = require('./schemas');
 
 export class HelloModule extends BaseModule {
     
@@ -32,6 +38,7 @@ export class HelloModule extends BaseModule {
         // getBlockByID: async (params) => this._dataAccess.blocks.get(params.id),
 	amountOfHellos: async () => {
             const res = await this._dataAccess.getChainState(CHAIN_STATE_HELLO_COUNTER);
+	    console.log(res);
             const count = codec.decode(
                 helloCounterSchema,
                 res
@@ -87,21 +94,21 @@ export class HelloModule extends BaseModule {
 
     public async afterTransactionApply({transaction, stateStore, reducerHandler}) {
         // Publish a `newHello` event for every received hello transaction
-        if (_input.transaction.moduleID === this.id && _input.transaction.assetID === HelloAssetID) {
-		const helloAsset = codec.decode(helloAssetSchema, _input.transaction.asset);
+        if (transaction.moduleID === this.id && transaction.assetID === HelloAsset.id) {
+		const helloAsset = codec.decode(helloAssetSchema, transaction.asset);
 
 		this._channel.publish('hello:newHello', {
-	            sender: _input.transaction._senderAddress.toString('hex'),
+	            sender: transaction._senderAddress.toString('hex'),
 	            hello: helloAsset.helloString
 		});
 	}	
     }
 
-    public async afterGenesisBlockApply({transaction, stateStore, reducerHandler}) {
+    public async afterGenesisBlockApply(_input: AfterGenesisBlockApplyContext) {
         // Set the hello counter to zero after the genesis block is applied
-        await stateStore.chain.set(
+        await _input.stateStore.chain.set(
             CHAIN_STATE_HELLO_COUNTER,
             codec.encode(helloCounterSchema, { helloCounter: 0 })
-        );
+        );	
     }
 }
