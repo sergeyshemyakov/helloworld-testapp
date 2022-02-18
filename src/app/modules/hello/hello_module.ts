@@ -94,7 +94,7 @@ export class HelloModule extends BaseModule {
 
     public async afterTransactionApply({transaction, stateStore, reducerHandler}) {
         // Publish a `newHello` event for every received hello transaction
-        if (transaction.moduleID === this.id && transaction.assetID === HelloAsset.id) {
+        if (transaction.moduleID === this.id && transaction.assetID === 0) {
 		const helloAsset = codec.decode(helloAssetSchema, transaction.asset);
 
 		this._channel.publish('hello:newHello', {
